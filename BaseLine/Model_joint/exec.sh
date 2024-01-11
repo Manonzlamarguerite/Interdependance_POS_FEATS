@@ -6,7 +6,7 @@
 # python3 conllu_bigrams.py train.10.conllu train.10.big
 # echo "Début de l'entrainement"
 # # Entraine le modèle de prédiction de POS
-# python3 train.py train.10.conllu train.10.pt train.10.voc
+python3 train.py train.10.conllu train.10.pt train.10.voc
 # echo "Fin de l'entraintement"
 
 # Permet l'inférence sur le fichier de test

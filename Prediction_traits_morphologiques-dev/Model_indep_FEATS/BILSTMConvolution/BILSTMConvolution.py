@@ -32,6 +32,7 @@ class BiLSTMConvolutionTagger(nn.Module):
         self.fc = nn.Linear( hidden_dim*2, output_dim)
 
         self.relu = nn.ReLU()
+
     def forward(self, x,c):
         # Word Embeddings
         word_embeds = self.word_embeddings(x)
@@ -56,7 +57,3 @@ class BiLSTMConvolutionTagger(nn.Module):
 
         logits = self.fc(self.relu(lstm_output))
         return logits , (hidden_states, cell_states)
-
-
-
-

@@ -102,8 +102,8 @@ def saveVocab(dicoVocab, fileName):
         print(dicoVocab[form], form, file=f)
 
 def main():
-    if len(sys.argv) < 6:
-        print("Usage :", sys.argv[0], "conlluFile modelName vocabFile nb_it embedding_dim")
+    if len(sys.argv) < 8:
+        print("Usage :", sys.argv[0], "conlluFile modelName vocabFile nb_it embedding_dim vocabChar")
         sys.exit(1)
 
     hidden_size = 256
@@ -114,7 +114,7 @@ def main():
     conlluFileName = sys.argv[1]
     modelFileName = sys.argv[2]
     vocabFileName = sys.argv[3]
-    vocabCharFileName=sys.argv[7]
+    vocabCharFileName = sys.argv[7]
 
     tagSet = UDTagSet(conlluFileName)
     output_dim = tagSet.size()

@@ -4,7 +4,7 @@ from conllu import parse_incr
 from utils import loadVocabFile
 import torch
 import torch.nn as nn
-from GRUNet import GRUNet
+from BILSTM import BiLSTMTagger
 from UDTagSet import UDTagSet
 
 
@@ -20,9 +20,9 @@ def decodeSentence(sentence, model, dicoVocab, tagSet) :
     for token in sentence :
         form = token['form']
         if form not in dicoVocab :
-            formCode = dicoVocab['<UNK>'] 
-        else :  
-            formCode = dicoVocab[form] 
+            formCode = dicoVocab['<UNK>']
+        else :
+            formCode = dicoVocab[form]
         x.append(formCode)
     input_vec = torch.tensor(x)
     yprime, h =  model.forward(input_vec)
@@ -46,8 +46,7 @@ def main():
     vocabSize = len(dicoVocab)
 
     tagSet = UDTagSet()
-    decode(conlluFileName, model, dicoVocab, tagSet)    
+    decode(conlluFileName, model, dicoVocab, tagSet)
 
 if __name__ == '__main__':
     main()
-

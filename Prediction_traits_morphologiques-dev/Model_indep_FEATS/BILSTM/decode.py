@@ -4,7 +4,7 @@ from conllu import parse_incr
 from utils import loadVocabFile
 import torch
 import torch.nn as nn
-from BILSTM import GRUNet
+from BILSTM import BiLSTMTagger
 from UDTagSet import UDTagSet
 
 def decode(conlluFileName, model, dicoVocab, tagSet) :

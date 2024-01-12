@@ -8,7 +8,7 @@ NB_IT=1
 DIM_EMB=100
 
 # Ajoute des mots inconnues dans le fichier d'entrainement
-# python3 ../../Outils/conllu_add_unk.py $FILE_TRAIN $T > ./input/$NAME_MODEL"."$T".conllu"
+python3 ../../Outils/conllu_add_unk.py $FILE_TRAIN $T > ./input/$NAME_MODEL"."$T".conllu"
 
 echo "Début de l'entrainement"
 # Entraine le modèle de prédiction de POS
@@ -17,6 +17,6 @@ echo "Fin de l'entraintement"
 
 echo "Evaluation du modèle"
 # Permet l'inférence sur le fichier de test
-python3 decode.py ./model/train.10.pt $FILE_TEST ./voc/$NAME_MODEL"."$T".voc"> "./Output/"$NAME_MODEL"."$T".auto.conllu"
+python3 decode.py ./model/$NAME_MODEL"."$T".pt" $FILE_TEST ./voc/$NAME_MODEL"."$T".voc"> "./Output/"$NAME_MODEL"."$T".auto.conllu"
 # Permet d'évaluer le modèle
 python3 ../../Outils/conll18_ud_eval.py -v $FILE_TEST "./Output/"$NAME_MODEL"."$T".auto.conllu"> "../../Evaluation/BiLSTM/Model_indep_POS/evaluation_fr_gsd-ud-test.conllu"

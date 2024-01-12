@@ -94,7 +94,6 @@ class UDTagSet:
         return self.superTag2Dico(superTag)
 
     def tagToCode(self, tag):
-        print(tag)
         supTag = self.dico2SuperTag(tag)
         if supTag in self.dico.keys():
             return self.dico[supTag]

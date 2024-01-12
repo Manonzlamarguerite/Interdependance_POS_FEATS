@@ -71,7 +71,7 @@ def saveVocab(dicoVocab, fileName):
         print(dicoVocab[form], form, file=f)
 
 def main():
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 6:
         print("Usage :", sys.argv[0], "conlluFile modelName vocabFile nb_it embedding_dim")
         sys.exit(1)
 

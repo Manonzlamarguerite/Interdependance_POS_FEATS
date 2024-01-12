@@ -28,8 +28,8 @@ class Bigrams():
         for sentNb, sentence in enumerate(parse_incr(data_file)):
             precPos = None
             for token in sentence :
-                currPos = token['upos']
-                currPosCode = tagSet.tag2code(currPos)
+                currPos = token['feats']
+                currPosCode = tagSet.tagToCode(currPos)
                 if not precPos :
                     self.initialProb[currPosCode] += 1
                 else :
@@ -45,7 +45,7 @@ class Bigrams():
 
 
     def bigramProba(self, bigramMatrix, precPos, currPos):
-        return self.bigramMatrix[self.tagSet.tag2code(precPos)][self.tagSet.tag2code(currPos)]
+        return self.bigramMatrix[self.tagSet.tagToCode(precPos)][self.tagSet.tagToCode(currPos)]
 
 
     def save(self, fileName):

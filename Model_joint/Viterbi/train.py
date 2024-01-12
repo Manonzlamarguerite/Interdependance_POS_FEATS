@@ -5,6 +5,9 @@ from utils import conlluPosTags
 import torch
 import torch.nn as nn
 from GRUNet import GRUNet
+from UDTagSet import UDTagSet
+
+
 
 def extractVocab(conlluFileName):
     dicoVocab = {}
@@ -38,6 +41,7 @@ def prepareData(conlluFileName, dicoVocab, tagSet) :
             if feats == None:
                 feats = {}
                 feats["POS"] = token["upos"]
+            feats["POS"] = token["upos"]
             featsCode = tagSet.tagToCode(feats)
             Y.append(featsCode)
         LX.append(X)
@@ -57,8 +61,8 @@ def train(LX, LY, model, nb_iter):
             input_vec = torch.tensor(x)
             output_vec = torch.tensor(y)
             optim.zero_grad()
-            yprime, h=  model.forward_train(input_vec)
-            loss = lossFct(yprime.float(), output_vec.long())
+            yprime, h =  model.forward_train(input_vec)
+            loss = lossFct(yprime, output_vec)
             total_loss += loss.item()
             loss.backward()
             optim.step()
@@ -71,7 +75,7 @@ def saveVocab(dicoVocab, fileName):
         print(dicoVocab[form], form, file=f)
 
 def main():
-    if len(sys.argv) < 7:
+    if len(sys.argv) < 6:
         print("Usage :", sys.argv[0], "conlluFile modelName vocabFile BigramFile nb_it emb_dim")
         sys.exit(1)
 
@@ -84,13 +88,13 @@ def main():
     vocabFileName = sys.argv[3]
     bigramFile = sys.argv[4]
 
-    dicoUpos = conlluPosTags()
-    output_dim = len(dicoUpos)
+    tagSet = UDTagSet(conlluFileName)
+    output_dim = tagSet.size()
 
     dicoVocab = extractVocab(conlluFileName)
     vocabSize = len(dicoVocab)
 
-    LX, LY = prepareData(conlluFileName, dicoVocab, dicoUpos)
+    LX, LY = prepareData(conlluFileName, dicoVocab, tagSet)
 
     model = GRUNet(embedding_dim, hidden_size, output_dim, vocabSize, bigramFile)
 

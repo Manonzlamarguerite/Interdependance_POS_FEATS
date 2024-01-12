@@ -28,7 +28,12 @@ class Bigrams():
         for sentNb, sentence in enumerate(parse_incr(data_file)):
             precPos = None
             for token in sentence :
-                currPos = token['upos']
+                currPos = token['feats']
+                if currPos == None:
+                    currPos = {}
+                    currPos["POS"] = token["upos"]
+                else:
+                    currPos["POS"] = token["upos"]
                 currPosCode = tagSet.tagToCode(currPos)
                 if not precPos :
                     self.initialProb[currPosCode] += 1

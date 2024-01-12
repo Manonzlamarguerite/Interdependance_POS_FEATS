@@ -17,7 +17,7 @@ echo "Début de l'entrainement"
 python3 train.py ./input/$NAME_MODEL"."$T".conllu" ./model/$NAME_MODEL"."$T".pt" "./voc/"$NAME_MODEL"."$T".voc" ./big/$NAME_MODEL"."$T".big" $NB_IT $DIM_EMB
 echo "Fin de l'entraintement"
 
-# echo "Evaluation du modèle"
+echo "Evaluation du modèle"
 # Permet l'inférence sur le fichier de test
 python3 decode.py ./model/train.10.pt $FILE_TEST ./voc/$NAME_MODEL"."$T".voc" ./input/$NAME_MODEL"."$T".conllu.tagSet" > "./output/"$NAME_MODEL"."$T".auto.conllu"
 # Permet d'évaluer le modèle

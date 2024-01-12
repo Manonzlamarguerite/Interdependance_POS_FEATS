@@ -5,6 +5,7 @@ from utils import conlluPosTags
 import torch
 import torch.nn as nn
 from GRUNet import GRUNet
+from UDTagSet import UDTagSet
 
 def extractVocab(conlluFileName):
     dicoVocab = {}
@@ -20,7 +21,7 @@ def extractVocab(conlluFileName):
     data_file.close()
     return dicoVocab
 
-def prepareData(conlluFileName, dicoVocab, dicoUpos) :
+def prepareData(conlluFileName, dicoVocab, tagSet) :
     data_file = open(conlluFileName, "r", encoding="utf-8")
     LX = []
     LY = []
@@ -34,9 +35,9 @@ def prepareData(conlluFileName, dicoVocab, dicoUpos) :
             else :
                 formCode = dicoVocab[form]
             X.append(formCode)
-            upos = token['upos']
-            uposCode = dicoUpos[upos]
-            Y.append(uposCode)
+            feats = token['feats']
+            featsCode = tagSet.tagToCode(feats)
+            Y.append(featsCode)
         LX.append(X)
         LY.append(Y)
     return LX, LY
@@ -81,13 +82,13 @@ def main():
     vocabFileName = sys.argv[3]
     bigramFile = sys.argv[4]
 
-    dicoUpos = conlluPosTags()
-    output_dim = len(dicoUpos)
+    tagSet = UDTagSet(conlluFileName)
+    output_dim = tagSet.size()
 
     dicoVocab = extractVocab(conlluFileName)
     vocabSize = len(dicoVocab)
 
-    LX, LY = prepareData(conlluFileName, dicoVocab, dicoUpos)
+    LX, LY = prepareData(conlluFileName, dicoVocab, tagSet)
 
     model = GRUNet(embedding_dim, hidden_size, output_dim, vocabSize, bigramFile)
 

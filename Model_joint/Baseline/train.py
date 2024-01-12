@@ -42,7 +42,7 @@ def prepareData(conlluFileName, dicoVocab, tagSet) :
                 feats = {}
                 feats["POS"] = token["upos"]
             else:
-                feats["POS"] = pos
+                feats["POS"] = token["upos"]
             featsCode = tagSet.tagToCode(feats)
             Y.append(featsCode)
         LX.append(X)

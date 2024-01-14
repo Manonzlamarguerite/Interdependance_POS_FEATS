@@ -4,7 +4,7 @@ FILE_TRAIN="../../data/fr_gsd-ud-train.conllu"
 NAME_MODEL="train"
 # NAME_PRED=""
 T=10
-NB_IT=1
+NB_IT=5
 DIM_EMB=100
 
 # Ajoute des mots inconnues dans le fichier d'entrainement

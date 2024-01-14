@@ -27,7 +27,6 @@ def decodeSentence(sentence, model, dicoVocab, tagSet) :
     for index, token in enumerate(sentence) :
         yhat = torch.argmax(yprime[index]).item()
         feats, pos = tagSet.codeToTag(yhat)
-        # print(feats, pos)
         token['feats'] = feats
         token['upos'] = pos
 

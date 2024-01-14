@@ -12,6 +12,7 @@ class UDTagSet:
     """
     def __init__(self,nameFile, tagSet=False):
         self.dico = {}
+        self.list_feat = []
         if tagSet:
             with open(nameFile, 'r') as fichier:
                 for ligne in fichier:
@@ -35,6 +36,8 @@ class UDTagSet:
                         if feats != None:
                             for feat in feats:
                                 label = feat+"="+feats[feat]
+                                if not(feat in self.list_feat):
+                                    self.list_feat.append(feat)
                                 if not(label in self.dico.keys()):
                                     self.dico[label] = indice
                                     indice += 1
@@ -46,6 +49,9 @@ class UDTagSet:
                     for ligne in fichier:
                         line_seg = ligne.split()
                         self.dico[line_seg[0]] = int(line_seg[1])
+                        c = line_seg[0].split("=")
+                        if not(c[0] in self.list_feat):
+                            self.list_feat.append(c[0])
 
     def writeFileTagSet(self, nameFileTagSet):
         with open(nameFileTagSet, "w") as file:
@@ -99,6 +105,29 @@ class UDTagSet:
             for i in range(len(self.dico.keys())):
                 code.append(0)
         return code
+
+    # Renvoie la liste des indices des classes correspondant au traits feat
+    def featToIndice(self, feat):
+        indices=[]
+        i = 0
+        for c in self.dico.keys():
+            s = c.split("=")
+            if s[0] == feat:
+                indices.append(i)
+            i+=1
+        return indices
+
+    # Renvoie le nom de la feature associé à l'indice
+    def indiceToFeat(self, indice):
+        c = list(self.dico.keys())
+        s = c[indice].split("=")
+        return s[0]
+
+    def createFeatList(self):
+        for feat in self.dico.keys():
+            s = feat.split("=")
+            if not(s[0] in self.list_feat):
+                self.list_feat.append(s[0])
 
     def size(self):
         return len(self.dico.keys())

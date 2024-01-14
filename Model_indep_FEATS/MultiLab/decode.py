@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 from GRUNetMultiLabel import GRUNetMultiLabel
 from UDTagSet import UDTagSet
+import numpy as np
 
 def decode(conlluFileName, model, dicoVocab, tagSet) :
     data_file = open(conlluFileName, "r", encoding="utf-8")
@@ -25,7 +26,25 @@ def decodeSentence(sentence, model, dicoVocab, tagSet) :
     input_vec = torch.tensor(x)
     yprime, predicted =  model.forward(input_vec)
     for index, token in enumerate(sentence) :
-        yhat = predicted[index]
+        proba = yprime[index].detach().numpy()
+        best_index = []
+        tagSet.createFeatList()
+        # print(tagSet.list_feat)
+        for feat in tagSet.list_feat:
+            index_f = tagSet.featToIndice(feat)
+            proba_feat = []
+            for i in index_f:
+                proba_feat.append(proba[i])
+            best_i = np.argmax(proba_feat)
+            if proba_feat[best_i] > 0.5:
+                best_index.append(index_f[best_i])
+
+        yhat = []
+        for i in range(len(proba)):
+            if i in best_index:
+                yhat.append(1)
+            else:
+                yhat.append(0)
         token['feats'] = tagSet.codeToTag(yhat)
 
 def main():

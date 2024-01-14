@@ -4,7 +4,7 @@ FILE_TRAIN="../../data/fr_gsd-ud-train.conllu"
 NAME_MODEL="train"
 # NAME_PRED=""
 T=10
-NB_IT=1
+NB_IT=5
 DIM_EMB=100
 
 # Ajoute des mots inconnues dans le fichier d'entrainement
@@ -37,3 +37,10 @@ python3 decode.py ./model/$NAME_MODEL"."$T"morpho.pt" "./output/"$NAME_MODEL"."$
 echo "Evaluation du modèle"
 # Permet d'évaluer le modèle
 python3 ../../Outils/conll18_ud_eval.py -v $FILE_TEST "./output/"$NAME_MODEL"."$T".auto.morpho.conllu" > "../../Evaluation/Baseline/Model_Pipeline_PosToFeat/evaluation_fr_gsd-ud-test.conllu"
+
+echo "Evaluation du modèle fausse (on donne les vrai POS)"
+# Permet l'inférence sur le fichier de test
+python3 decode.py ./model/$NAME_MODEL"."$T"morpho.pt" $FILE_TEST "./voc/"$NAME_MODEL"."$T"morpho.voc" ./input/$NAME_MODEL"."$T".conllu.tagSet" > "./output/"$NAME_MODEL"."$T".auto.morpho.faux.conllu"
+
+# Permet d'évaluer le modèle
+python3 ../../Outils/conll18_ud_eval.py -v $FILE_TEST "./output/"$NAME_MODEL"."$T".auto.morpho.faux.conllu" > "../../Evaluation/Baseline/Model_Pipeline_PosToFeat/evaluation_fausse_fr_gsd-ud-test.conllu"

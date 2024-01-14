@@ -4,7 +4,7 @@ FILE_TRAIN="../../data/fr_gsd-ud-train.conllu"
 NAME_MODEL="train"
 
 T=10
-NB_IT=1
+NB_IT=5
 DIM_EMB=100
 DIM_CHAR_EMB=100
 
@@ -12,7 +12,7 @@ DIM_CHAR_EMB=100
 # Ajoute des mots inconnues dans le fichier d'entrainement
 python3 ../../Outils/conllu_add_unk.py $FILE_TRAIN $T > ./input/$NAME_MODEL"."$T".conllu"
 
----------- Trais morphologique ---------- #
+#---------- Trais morphologique ---------- #
 echo "Début de l'entrainement FEATS"
 # Entraine le modèle de prédiction des traits morphologiques
 python3 ../../Model_indep_FEATS/BILSTMConvolution/train.py ./input/$NAME_MODEL"."$T".conllu" ./model/$NAME_MODEL"."$T".morpho.pt" "./voc/"$NAME_MODEL"."$T".morpho.voc" $NB_IT $DIM_EMB $DIM_CHAR_EMB "./voc/"$NAME_MODEL"char."$T".morpho.voc"
@@ -32,12 +32,11 @@ echo "Inférence des POS"
 # Permet l'inférence sur le fichier de test
 python3 decode.py ./model/$NAME_MODEL"."$T".pos.pt" ./Output/$NAME_MODEL"."$T".auto.morpho.conllu" ./voc/$NAME_MODEL"."$T".pos.voc"  ./voc/$NAME_MODEL"char."$T".pos.voc" > "./Output/"$NAME_MODEL"."$T".auto.pos.conllu"
 
-
 # Permet d'évaluer le modèle
 python3 ../../Outils/conll18_ud_eval.py -v $FILE_TEST "./Output/"$NAME_MODEL"."$T".auto.pos.conllu" > "../../Evaluation/BiLSTM_Conv/Model_Pipeline_FeatToPos/evaluation_fr_gsd-ud-test.conllu"
 
+echo "Evaluation du modèle fausse (on donne les vrais POS)"
 python3 decode.py ./model/$NAME_MODEL"."$T".pos.pt" $FILE_TEST ./voc/$NAME_MODEL"."$T".pos.voc"  ./voc/$NAME_MODEL"char."$T".pos.voc" > "./Output/"$NAME_MODEL"."$T".auto.pos.faux.conllu"
-
 
 # Permet d'évaluer le modèle
 python3 ../../Outils/conll18_ud_eval.py -v $FILE_TEST "./Output/"$NAME_MODEL"."$T".auto.pos.faux.conllu" > "../../Evaluation/BiLSTM_Conv/Model_Pipeline_FeatToPos/evaluation_fausse_fr_gsd-ud-test.conllu"

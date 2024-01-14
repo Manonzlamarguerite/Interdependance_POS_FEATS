@@ -4,13 +4,13 @@ FILE_TRAIN="../../data/fr_gsd-ud-train.conllu"
 NAME_MODEL="train"
 # NAME_PRED=""
 T=10
-NB_IT=1
+NB_IT=5
 DIM_EMB=100
 
 # Ajoute des mots inconnues dans le fichier d'entrainement
-python3 ../../Outils/conllu_add_unk.py $FILE_TRAIN $T > ./input/$NAME_MODEL"."$T".conllu"
+# python3 ../../Outils/conllu_add_unk.py $FILE_TRAIN $T > ./input/$NAME_MODEL"."$T".conllu"
 # Calcule les probabilité des bigrammes de POS
-python3 conllu_bigrams.py ./input/$NAME_MODEL"."$T".conllu" "./big/"$NAME_MODEL"."$T".big"
+# python3 conllu_bigrams.py ./input/$NAME_MODEL"."$T".conllu" "./big/"$NAME_MODEL"."$T".big"
 
 echo "Début de l'entrainement"
 # Entraine le modèle de prédiction de POS

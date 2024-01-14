@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from bigrams import Bigrams
 from viterbi import Viterbi
+import numpy as np
 
 class GRUNet(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim, vocabSize, bigramFile, n_layers= 1, drop_prob=0):
@@ -21,7 +22,7 @@ class GRUNet(nn.Module):
         self.fc = nn.Linear(hidden_dim, output_dim)
         self.relu = nn.ReLU()
 
-    def forward_train(self, x):
+    def forward_test(self, x):
         # Application du GRU pour les proba d'emitions
         out, h = self.gru(self.emb(x))
         out = self.fc(self.relu(out))
@@ -35,11 +36,13 @@ class GRUNet(nn.Module):
         treillis.calcul_delta()
         # Calcul de la suite d'étiquette la plus probable
         best_label = treillis.proba_label()
-        # out = torch.from_numpy(best_label)
+
+        out = torch.from_numpy(np.array(best_label))
+        # out.requires_grad_(True)
 
         return out, h
 
-    def forward_test(self, x):
+    def forward_train(self, x):
         out, h = self.gru(self.emb(x))
         out = self.fc(self.relu(out))
         return out, h

@@ -1,5 +1,5 @@
-# Prediction_traits_morphologiques
-Ce projet a pour but d'étudier les interdépendances entre les tâches de POS Tagging et la prédiction de traits morphologiques.
+# Interdependance_POS_FEATS
+Ce projet a pour but d'étudier les interdépendances entre les tâches de POS Tagging et la prédiction de traits morphologiques (_feats_).
 
 Nous souhaitons étudier les indépendances possibles entre les tâches de prédiction des étiquettes POS et de prédiction des traits morphologiques. Pour ce faire, nous avons créé 4 types de modèles :
 - **Modèle indépendant pour les POS** : un modèle qui permet de prédire uniquement les étiquettes POS.
